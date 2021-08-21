@@ -3,11 +3,6 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const Issue = require("./models/issue");
-const User = require("./models/user");
-const passport = require("passport");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
-const config = require("./config/database");
 
 // initializing app variable with express
 const app = express();
