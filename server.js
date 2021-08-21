@@ -25,16 +25,6 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(passport.session());
 
-// require('./config/passport')(passport);
-// const passportAunt = require('./config/passport')(passport);
-
-// app.post(
-//   "/profile",
-//   passport.authenticate("jwt", { session: false }),
-//   function (req, res) {
-//     res.send(req.user.profile);
-//   }
-// );
 
 // Index Route
 app.get("/", (req, res) => res.send("Hello test any page"));
@@ -93,116 +83,6 @@ router.route("/issues/delete/:id").get((req, res) => {
     if (err) res.json(err);
     else res.json("Removed successfully");
   });
-});
-
-/////// users /////// users /////// users /////// users ///////
-
-router.route("/users").get((req, res) => {
-  User.find((err, users) => {
-    if (err) console.log(err);
-    else res.json(users);
-  });
-});
-router.route("/users/:id").get((req, res) => {
-  User.findById(req.params.id, (err, user) => {
-    if (err) console.log(err);
-    else res.json(user);
-  });
-});
-
-// Register
-router.route("/users/register").post((req, res, next) => {
-  let user = new User({
-    name: req.body.name,
-    email: req.body.email,
-    username: req.body.username,
-    password: req.body.password,
-  });
-
-  User.addUser(user, (err, user) => {
-    if (err) {
-      res.status(400).send("Failed to create new user");
-    } else {
-      res.status(200).json({ user: "User added successfully" });
-    }
-  });
-});
-
-// // Authenticate
-// router.route("/users/authenticate").post((req, res, next) => {
-//   const username = req.body.username;
-//   const password = req.body.password;
-//   require("./config/passport")(passport);
-
-//   User.getUserByUsername(username, (err, user) => {
-//     if (err) throw err;
-//     if (!user) {
-//       return res.json({ success: false, msg: "User not found" });
-//     }
-//     User.comparePassword(password, user.password, (err, isMatch) => {
-//       if (err) throw err;
-//       if (isMatch) {
-//         const token = jwt.sign(user, config.secret, {
-//           expiresIn: 72000, // 2 hours
-//         });
-
-//         res.json({
-//           success: true,
-//           token: "JWT " + token,
-//           user: {
-//             id: user._id,
-//             name: user.name,
-//             username: user.username,
-//             email: user.email,
-//           },
-//         });
-//       } else {
-//         return res.json({ success: false, msg: "Wrong password" });
-//       }
-//     });
-//   });
-// });
-
-// // Profile
-// router
-//   .route("/users/profile", passport.authenticate("jwt", { session: false }))
-//   .get((req, res, next) => {
-//     res.json({ user: req.user });
-//   });
-
-router.route("/users/update/:id").post((req, res) => {
-  User.findById(req.params.id, (err, user) => {
-    if (!user) return next(new Error("Could not load document"));
-    else {
-      user.name = req.body.name;
-      user.email = req.body.email;
-      user.username = req.body.username;
-      user.password = req.body.password;
-
-      user
-        .save()
-        .then((user) => {
-          res.json("Update done");
-        })
-        .catch((err) => {
-          res.status(400).send("Update failed");
-        });
-    }
-  });
-});
-router.route("/users/delete/:id").get((req, res) => {
-  User.findByIdAndRemove({ _id: req.params.id }, (err, user) => {
-    if (err) res.json(err);
-    else res.json("Removed successfully");
-  });
-});
-
-router.route("/users/profile").get((req, res) => {
-  res.send("PROFILE");
-});
-
-router.route("/users/validate").post((req, res) => {
-  res.send("VALIDATE");
 });
 
 mongoose.connect(
