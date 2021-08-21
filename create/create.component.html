@@ -1,0 +1,36 @@
+<div>
+  <div class="todo-list"><span class="span-wide-style">SCHEDULE LIST | PERSONAL CONTENT</span></div>
+  <div class="button-wrapper" style="margin-bottom: 4rem;">
+    <span class="span-title-style">Create New Item</span>
+  </div>
+
+  <mat-card>
+    <form [formGroup]="createForm" class="create-form">
+        <mat-form-field class="field-full-width">
+            <input matInput placeholder="Item Title" formControlName="title" #title>
+          </mat-form-field>
+          <mat-form-field class="field-full-width">
+            <input matInput placeholder="Responcible" formControlName="responcible" #responcible>
+          </mat-form-field>
+        <mat-form-field class="field-full-width">
+            <input matInput placeholder="Description" formControlName="description" #description>
+          </mat-form-field>
+
+          <mat-form-field class="field-full-width">
+           <mat-select placeholder="Severity" formControlName="severity" #severity> 
+                <mat-option value="Low">Low</mat-option>
+                <mat-option value="Medium">Medium</mat-option>
+                <mat-option value="High">High</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- <mat-divider></mat-divider> -->
+          <br><br>
+          <div class="button-wrapper" style="margin-bottom: 4rem;">
+            <button class="button-back-style" routerLink="/list">BACK</button>
+            <button class="button-confirm-style" type="submit" (click)="addIssue(title.value, responcible.value, description.value, severity.value)" [disabled]="createForm.pristine || createForm.invalid">SAVE</button>
+          </div>
+    </form>
+  </mat-card>
+</div>
+
